@@ -1,12 +1,20 @@
 import express from "express";
 import { AppDataSource } from "./ormconfig";
+import orderRoutes from "./routes/orderRoutes";
+import orderItemRoutes from "./routes/orderItemRoutes";
+import userRoutes from "./routes/user";
 
 const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("i'm home");
+    res.send("I'm home");
 });
+
+// Register routes
+app.use("/orders", orderRoutes);
+app.use("/order-items", orderItemRoutes);
+app.use("/user", userRoutes);
 
 const PORT = 5000;
 
