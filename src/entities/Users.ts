@@ -11,7 +11,7 @@ export class Users {
     name: string
 
     @Column()
-    mobileno: number
+    mobileno: string
 
     @Column()
     email: string

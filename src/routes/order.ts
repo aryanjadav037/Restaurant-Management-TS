@@ -22,4 +22,37 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 });
 
+// Create a new order
+router.post("/new", async (req: Request, res: Response) => {
+    const orderRepository = AppDataSource.getRepository(Orders);
+    const newOrder = orderRepository.create(req.body);
+    const result = await orderRepository.save(newOrder);
+    res.json(result);
+}); 
 
+// Update an order by ID
+router.put("/:id", async (req: Request, res: Response) => {
+    const orderRepository = AppDataSource.getRepository(Orders);
+    const orderId = parseInt(req.params.id);
+    const order = await orderRepository.findOneBy({ id: orderId });
+    if (order) {
+        orderRepository.merge(order, req.body);
+        const result = await orderRepository.save(order);
+        res.json(result);
+    } else {
+        res.status(404).json({ message: "Order not found" });
+    }
+});
+
+// Delete an order by ID
+router.delete("/delete/:id", async (req: Request, res: Response) => {
+    const orderRepository = AppDataSource.getRepository(Orders);
+    const result = await orderRepository.delete(req.params.id);
+    if (result.affected) {
+        res.json({ message: "Order deleted" });
+    } else {
+        res.status(404).json({ message: "Order not found" });
+    }
+});
+
+export default router;
