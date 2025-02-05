@@ -16,6 +16,6 @@ export class OrderItems {
     @ManyToOne(() => Orders, (order) => order.orderitems)
     order: Orders
 
-    @OneToOne(() => OrderItems, (orderitems) => orderitems.item)
+    @ManyToOne(() => Items)
     item: Items
 }
