@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Min } from "class-validator";
 import { Orders } from "./Orders";
-import { Items } from "./Items";
 
 @Entity()
 export class OrderItems {
@@ -8,14 +8,13 @@ export class OrderItems {
     id: number
 
     @Column()
+    @Min(1)
     quantity:  number
 
     @Column()
+    @Min(0)
     price: number
 
     @ManyToOne(() => Orders, (order) => order.orderitems)
     order: Orders
-
-    @ManyToOne(() => Items)
-    item: Items
 }

@@ -1,30 +1,33 @@
 import express from "express";
 import { AppDataSource } from "./ormconfig";
-import orderRoutes from "./routes/order";
-import orderItemRoutes from "./routes/orderitem";
-import userRoutes from "./routes/user";
+import userRouter from "./routes/user";
+import restaurantRouter from "./routes/restaurant";
+import orderRouter from "./routes/order";
+import itemRouter from "./routes/item";
+import orderitemRouter from "./routes/orderitem";
 
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send(`<h1>Welcome to the Order Management System</h1>`);
+app.use("/", (req,res) => {
+    res.send("Welcome to the Home Page");
 });
 
-// Register routes
-app.use("/orders", orderRoutes);
-app.use("/order-items", orderItemRoutes);
-app.use("/user", userRoutes);
+app.use("/users", userRouter)
+app.use("/restaurants", restaurantRouter)
+app.use("/orders", orderRouter)
+app.use("/items", itemRouter)
+app.use("/orderitems", orderitemRouter)
 
 const PORT = 5000;
 
+// Start Express server after DB is connected
 AppDataSource.initialize()
     .then(() => {
-        console.log("Database connected");
+        console.log("📌 Database Connected Successfully");
+
         app.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`);
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
         });
     })
-    .catch((err) => {
-        console.error("Error during Data Source initialization:", err);
-    });
+    .catch((error) => console.error("❌ Database Connection Failed:", error));
